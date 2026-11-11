@@ -2,8 +2,9 @@
 
 The tests build throwaway screen directories in a tmp path and point the tools at them, so they
 never depend on the repo's own screens/ layout. They need the plugin code (inkterface_core) on sys.path;
-catalog_lib looks for it in $INKTERFACE_CORE, ./.inkterface/decky/py_modules, then ../inkterface/decky/py_modules.
-Not found: locally the whole suite is skipped with that explanation; in CI (GITHUB_ACTIONS) it is an error.
+catalog_lib finds it in the vendored copy at vendor/inkterface_core (the $INKTERFACE_CORE env var overrides
+it with a live plugin checkout). Not found: locally the whole suite is skipped with that explanation;
+in CI (GITHUB_ACTIONS) it is an error.
 """
 from __future__ import annotations
 

@@ -4,10 +4,11 @@ Everything the validator, preview renderer, catalog builder and signer have in c
 where the plugin code is, the per-screen limits, how a screen is packaged into a staging
 copy, and how its preview is rendered with the plugin's own renderer.
 
-The plugin code (the `inkterface_core` package) is found through the INKTERFACE_CORE
-environment variable, pointing at the directory that CONTAINS `inkterface_core`. CI checks
-out the plugin repo at the ref in the INKTERFACE_REF file into `.inkterface/...`; a local
-run points it at the plugin worktree. Default: ./.inkterface/decky/py_modules.
+The plugin code (the `inkterface_core` package) is VENDORED in this repo at `vendor/inkterface_core`
+(a pinned, byte-identical copy; see vendor/README.md), so the tools and CI are self-contained and never
+need the plugin repo. For development against a live plugin checkout, set the INKTERFACE_CORE
+environment variable to the directory that CONTAINS `inkterface_core` (the plugin's decky/py_modules);
+it takes precedence over the vendored copy.
 """
 from __future__ import annotations
 
@@ -23,7 +24,7 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 SCREENS_DIR = REPO_ROOT / "screens"
-DEFAULT_CORE = REPO_ROOT / ".inkterface" / "decky" / "py_modules"
+VENDOR_CORE = REPO_ROOT / "vendor"   # contains the vendored inkterface_core package
 
 # ---- per-screen limits (the brief's section (d)) ------------------------------------------
 
@@ -54,15 +55,12 @@ class CatalogError(Exception):
 
 # ---- plugin code import ---------------------------------------------------------------------
 
-SIBLING_CORE = REPO_ROOT.parent / "inkterface" / "decky" / "py_modules"   # the usual side-by-side clone
-
-
 def core_dir() -> Path:
-    """Directory that contains the `inkterface_core` package. First hit wins: $INKTERFACE_CORE, ./.inkterface/decky/py_modules
-    (what CI creates), a sibling clone ../inkterface/decky/py_modules. Nothing found: the CI default, so the error names it."""
+    """Directory that contains the `inkterface_core` package. The vendored copy (vendor/) wins; a live
+    plugin checkout can override it with the INKTERFACE_CORE env var (the dir containing inkterface_core)."""
     if os.environ.get("INKTERFACE_CORE"):
         return Path(os.environ["INKTERFACE_CORE"])
-    return next((d for d in (DEFAULT_CORE, SIBLING_CORE) if (d / "inkterface_core").is_dir()), DEFAULT_CORE)
+    return VENDOR_CORE
 
 
 def ensure_core_on_path() -> Path:
@@ -71,9 +69,9 @@ def ensure_core_on_path() -> Path:
     pkg = d / "inkterface_core"
     if not pkg.is_dir():
         raise CatalogError(
-            f"inkterface_core not found at {pkg} -- set INKTERFACE_CORE to the directory containing "
-            f"inkterface_core (the plugin's decky/py_modules), clone the plugin next to this repo as ../inkterface, "
-            f"or link/check it out as ./.inkterface (CI does this)"
+            f"inkterface_core not found at {pkg} -- the vendored copy at {VENDOR_CORE / 'inkterface_core'} "
+            f"is missing (run tools/sync_vendor.py), or set INKTERFACE_CORE to a plugin checkout's "
+            f"decky/py_modules to override it"
         )
     s = str(d)
     if s not in sys.path:
@@ -81,13 +79,23 @@ def ensure_core_on_path() -> Path:
     return pkg
 
 
+BUILTIN_IDS_FILE = VENDOR_CORE / "BUILTIN_SCREEN_IDS"   # one built-in screen id per line, synced from the plugin
+
+
 def builtin_ids() -> set[str]:
-    """Ids a community screen may not use: the built-in screen folder names in <core>/../../screens."""
-    # core_dir() is .../decky/py_modules; built-ins live at .../decky/screens.
-    screens = core_dir().parent / "screens"
-    if not screens.is_dir():
+    """Ids a community screen may not use: the plugin's built-in screen folder names.
+
+    When INKTERFACE_CORE points at a live plugin checkout, read them from its decky/screens; otherwise use
+    the vendored list in vendor/BUILTIN_SCREEN_IDS (refreshed by tools/sync_vendor.py)."""
+    if os.environ.get("INKTERFACE_CORE"):
+        # INKTERFACE_CORE is .../decky/py_modules; built-ins live at .../decky/screens.
+        screens = core_dir().parent / "screens"
+        if screens.is_dir():
+            return {p.name for p in screens.iterdir() if (p / "screen.json").is_file()}
         return set()
-    return {p.name for p in screens.iterdir() if (p / "screen.json").is_file()}
+    if BUILTIN_IDS_FILE.is_file():
+        return {ln.strip() for ln in BUILTIN_IDS_FILE.read_text("utf-8").splitlines() if ln.strip()}
+    return set()
 
 
 # ---- staging + packaging -------------------------------------------------------------------
