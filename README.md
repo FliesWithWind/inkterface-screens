@@ -29,10 +29,10 @@ plugin's `decky/py_modules`), `./.inkterface/decky/py_modules` (CI checks the pl
 `INKTERFACE_REF`; locally `ln -s /path/to/inkterface .inkterface` does the same) and `../inkterface/decky/py_modules`
 (the plugin cloned next to this repo). With none of them the tests are skipped with a message saying so.
 
-Run the tests (Pillow comes from uv; `cryptography` is only used by one cross-check):
+Run the tests (Pillow comes from uv):
 
 ```sh
-uv run --python 3.14 --no-project --with pytest --with pillow --with cryptography pytest -q
+uv run --python 3.14 --no-project --with pytest --with pillow pytest -q
 ```
 
 ```sh
