@@ -1,0 +1,90 @@
+name: Publish catalog
+
+# Builds the catalog, signs the index, and publishes it to GitHub Pages.
+#
+# Why GitHub Pages rather than a release asset: the plugin needs ONE stable base URL that serves
+# index.json, index.json.sig, every zip and every preview under predictable relative paths. Pages
+# gives exactly that -- a fixed base (https://flieswithwind.github.io/inkterface-screens/), a CDN in
+# front of it, no API rate limit on downloads, and an atomic deploy so the index and the files it
+# points at always go live together. A release asset would scatter files across per-asset URLs,
+# rate-limit the API, and have no atomic swap.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: publish
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    outputs:
+      built: ${{ steps.build.outcome }}
+    steps:
+      - name: Check out the catalog
+        uses: actions/checkout@v4
+
+      - name: Read the pinned plugin ref
+        id: ref
+        run: echo "ref=$(head -n1 INKTERFACE_REF | tr -d '[:space:]')" >> "$GITHUB_OUTPUT"
+
+      - name: Check out the plugin at the pinned ref
+        uses: actions/checkout@v4
+        with:
+          repository: FliesWithWind/inkterface
+          ref: ${{ steps.ref.outputs.ref }}
+          path: .inkterface
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.14'
+
+      - name: Install Pillow
+        run: pip install pillow==13.0.0
+
+      - name: Validate every screen
+        run: python tools/validate.py
+
+      - name: Build the catalog site
+        id: build
+        run: python tools/build_catalog.py --out site
+
+      - name: Sign the index
+        # Signing runs only here, only on main. An empty secret fails the job: never publish unsigned.
+        env:
+          INKTERFACE_CATALOG_KEY: ${{ secrets.INKTERFACE_CATALOG_KEY }}
+        run: |
+          if [ -z "${INKTERFACE_CATALOG_KEY}" ]; then
+            echo "::error::INKTERFACE_CATALOG_KEY secret is empty -- refusing to publish an unsigned index"
+            exit 1
+          fi
+          if [ -f catalog-pubkey.txt ]; then
+            python tools/sign_index.py site/index.json --pubkey-file catalog-pubkey.txt
+          else
+            python tools/sign_index.py site/index.json
+          fi
+
+      - name: Upload the Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

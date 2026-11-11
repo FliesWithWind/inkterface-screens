@@ -1,0 +1,6 @@
+# Branch protection must require code-owner review on this repo, so every PR is reviewed by the
+# owner. screen.py changes always need it: code screens run on the user's machine, so the owner
+# reads every line and the second, more specific rule below keeps that review mandatory even if the
+# top-level rule is ever loosened.
+* @FliesWithWind
+/screens/*/screen.py @FliesWithWind

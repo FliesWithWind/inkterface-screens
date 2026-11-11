@@ -1,0 +1,49 @@
+name: PR validation
+
+# Runs on pull_request (NOT pull_request_target): the workflow uses the PR's own code but needs
+# no secrets, so it must never run with the base repo's token and secrets against fork code.
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pr-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the catalog
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # validate.py --base needs the base commit for the diff
+
+      - name: Read the pinned plugin ref
+        id: ref
+        run: echo "ref=$(head -n1 INKTERFACE_REF | tr -d '[:space:]')" >> "$GITHUB_OUTPUT"
+
+      - name: Check out the plugin at the pinned ref
+        uses: actions/checkout@v4
+        with:
+          repository: FliesWithWind/inkterface
+          ref: ${{ steps.ref.outputs.ref }}
+          path: .inkterface
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.14'
+
+      - name: Install Pillow
+        run: pip install pillow==13.0.0
+
+      - name: Validate changed screens
+        env:
+          BASE_REF: ${{ github.base_ref }}
+        run: python tools/validate.py --base "origin/${BASE_REF}"
+
+      - name: Run the catalog tests
+        run: python -m pytest tests -q -p no:cacheprovider
