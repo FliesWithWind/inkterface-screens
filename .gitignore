@@ -4,7 +4,6 @@
 # Signing keys -- NEVER commit these
 *.key
 catalog.key
-catalog-pubkey.txt
 
 # Python
 __pycache__/

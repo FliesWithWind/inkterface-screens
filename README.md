@@ -3,9 +3,9 @@
 Community screen catalog for the inkterface Decky plugin. Each screen here is a package the plugin
 can download and show on the e-ink panel. The
 plugin fetches a signed index from GitHub Pages and lets users browse and install screens from its
-Store page.
+Screen Store page.
 
-**Users:** you do not clone this repo. Install screens from the plugin's Store page inside the
+**Users:** you do not clone this repo. Install screens from the plugin's Screen Store page inside the
 inkterface plugin. This repo is where screens are contributed and reviewed.
 
 ## What a screen is
