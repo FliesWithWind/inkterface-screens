@@ -41,7 +41,7 @@ EXCLUDE_FROM_ZIP = {"README.md", "preview.png"}
 CODE_README_SECTION = "## What the code does"
 
 # catalog.json default when a screen has no override.
-DEFAULT_MIN_PLUGIN_VERSION = "1.0.0"
+DEFAULT_MIN_PLUGIN_VERSION = "1.0.0-beta.1"   # 1.0.0 would exclude the beta plugin: prereleases sort below
 
 
 class CatalogError(Exception):
@@ -54,9 +54,15 @@ class CatalogError(Exception):
 
 # ---- plugin code import ---------------------------------------------------------------------
 
+SIBLING_CORE = REPO_ROOT.parent / "inkterface" / "decky" / "py_modules"   # the usual side-by-side clone
+
+
 def core_dir() -> Path:
-    """Directory that contains the `inkterface_core` package (from INKTERFACE_CORE or the default)."""
-    return Path(os.environ.get("INKTERFACE_CORE") or DEFAULT_CORE)
+    """Directory that contains the `inkterface_core` package. First hit wins: $INKTERFACE_CORE, ./.inkterface/decky/py_modules
+    (what CI creates), a sibling clone ../inkterface/decky/py_modules. Nothing found: the CI default, so the error names it."""
+    if os.environ.get("INKTERFACE_CORE"):
+        return Path(os.environ["INKTERFACE_CORE"])
+    return next((d for d in (DEFAULT_CORE, SIBLING_CORE) if (d / "inkterface_core").is_dir()), DEFAULT_CORE)
 
 
 def ensure_core_on_path() -> Path:
@@ -66,7 +72,8 @@ def ensure_core_on_path() -> Path:
     if not pkg.is_dir():
         raise CatalogError(
             f"inkterface_core not found at {pkg} -- set INKTERFACE_CORE to the directory containing "
-            f"inkterface_core (the plugin's decky/py_modules), or let CI check out the plugin into .inkterface"
+            f"inkterface_core (the plugin's decky/py_modules), clone the plugin next to this repo as ../inkterface, "
+            f"or link/check it out as ./.inkterface (CI does this)"
         )
     s = str(d)
     if s not in sys.path:

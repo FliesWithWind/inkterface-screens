@@ -23,10 +23,17 @@ Seed screens in this repo: `gpu-focus` (declarative active), `month-calendar` (c
 
 ## Make a screen
 
-You need Python 3.14 and Pillow. Point the tools at a checkout of the plugin via the
-`INKTERFACE_CORE` environment variable (the directory that contains `inkterface_core`, i.e. the
-plugin's `decky/py_modules`). CI does this for you by checking out the plugin at the ref in
-`INKTERFACE_REF`.
+You need Python 3.14 and Pillow. The tools import the plugin's own validator and renderer, so they need a plugin
+checkout. They look, in this order, at `$INKTERFACE_CORE` (the directory that contains `inkterface_core`, i.e. the
+plugin's `decky/py_modules`), `./.inkterface/decky/py_modules` (CI checks the plugin out there at the ref in
+`INKTERFACE_REF`; locally `ln -s /path/to/inkterface .inkterface` does the same) and `../inkterface/decky/py_modules`
+(the plugin cloned next to this repo). With none of them the tests are skipped with a message saying so.
+
+Run the tests (Pillow comes from uv; `cryptography` is only used by one cross-check):
+
+```sh
+uv run --python 3.14 --no-project --with pytest --with pillow --with cryptography pytest -q
+```
 
 ```sh
 export INKTERFACE_CORE=/path/to/inkterface/decky/py_modules

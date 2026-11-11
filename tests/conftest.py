@@ -1,13 +1,15 @@
 """Shared pytest fixtures for the catalog tests.
 
 The tests build throwaway screen directories in a tmp path and point the tools at them, so they
-never depend on the repo's own screens/ layout. They need the plugin code on sys.path; the brief's
-run command sets INKTERFACE_CORE, and catalog_lib picks it up.
+never depend on the repo's own screens/ layout. They need the plugin code (inkterface_core) on sys.path;
+catalog_lib looks for it in $INKTERFACE_CORE, ./.inkterface/decky/py_modules, then ../inkterface/decky/py_modules.
+Not found: locally the whole suite is skipped with that explanation; in CI (GITHUB_ACTIONS) it is an error.
 """
 from __future__ import annotations
 
 import io
 import json
+import os
 import sys
 from pathlib import Path
 
@@ -21,7 +23,12 @@ import catalog_lib as C  # noqa: E402
 
 @pytest.fixture(scope="session", autouse=True)
 def _core_on_path():
-    C.ensure_core_on_path()
+    try:
+        C.ensure_core_on_path()
+    except C.CatalogError as e:
+        if os.environ.get("GITHUB_ACTIONS"):
+            raise
+        pytest.skip(str(e))
 
 
 def _png_1bit(size=(648, 480)):
