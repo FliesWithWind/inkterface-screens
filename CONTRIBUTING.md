@@ -5,9 +5,11 @@ committed, and code screens explain themselves.
 
 ## Steps
 
-1. Read the plugin's [screen format](https://github.com/FliesWithWind/inkterface/blob/main/docs/screen-format.md)
-   and [screen packages](https://github.com/FliesWithWind/inkterface/blob/main/docs/screen-packages.md).
-2. Point the tools at a plugin checkout: `export INKTERFACE_CORE=/path/to/inkterface/decky/py_modules`.
+1. Skim the screen schema in the vendored validator, `vendor/inkterface_core/screens/schema.py`: it
+   lists every widget type, field and limit the catalog accepts.
+2. No setup is needed: the plugin's validator and renderer are vendored at `vendor/inkterface_core`,
+   so the tools and tests run out of the box with just Python 3.14 and Pillow. (To develop against a
+   live plugin checkout instead, `export INKTERFACE_CORE=/path/to/inkterface/decky/py_modules`.)
 3. Scaffold: `python tools/new_screen.py my-screen` (add `--code` for a code screen). The folder
    name must equal the `id` in `screen.json`, and must not be a built-in id.
 4. Edit `screens/my-screen/`. Add a `sample-data.json` so the emulator and preview have data.
