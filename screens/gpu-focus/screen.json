@@ -1,0 +1,185 @@
+{
+  "schema": 1,
+  "id": "gpu-focus",
+  "name": "GPU Focus",
+  "version": "1.0.0",
+  "author": "inkterface contributors",
+  "description": "A big GPU load gauge with temperature, clock and memory-clock sparklines.",
+  "active": {
+    "refresh_s": 1.0,
+    "widgets": [
+      {
+        "type": "text",
+        "x": 0,
+        "y": 0,
+        "w": 32,
+        "h": 30,
+        "text": "",
+        "invert": true
+      },
+      {
+        "type": "icon",
+        "x": 4,
+        "y": 3,
+        "w": 24,
+        "h": 24,
+        "name": "gpu",
+        "invert": true
+      },
+      {
+        "type": "text",
+        "x": 32,
+        "y": 0,
+        "w": 616,
+        "h": 30,
+        "text": "GPU",
+        "font": "bold-20",
+        "valign": "middle",
+        "invert": true
+      },
+      {
+        "type": "gauge",
+        "x": 16,
+        "y": 48,
+        "w": 240,
+        "h": 240,
+        "bind": "system.gpu.load",
+        "range": [0, 100],
+        "unit": "%",
+        "font": "bold-56"
+      },
+      {
+        "type": "text",
+        "x": 16,
+        "y": 292,
+        "w": 240,
+        "h": 24,
+        "text": "GPU LOAD",
+        "font": "regular-16",
+        "align": "center"
+      },
+      {
+        "type": "text",
+        "x": 288,
+        "y": 48,
+        "w": 100,
+        "h": 40,
+        "text": "TEMP",
+        "font": "regular-16",
+        "valign": "middle"
+      },
+      {
+        "type": "number",
+        "x": 392,
+        "y": 48,
+        "w": 248,
+        "h": 40,
+        "bind": "system.gpu.temp",
+        "unit": "°C",
+        "font": "bold-28",
+        "align": "right",
+        "valign": "middle"
+      },
+      {
+        "type": "sparkline",
+        "x": 288,
+        "y": 92,
+        "w": 352,
+        "h": 56,
+        "bind": "system.gpu.temp.history",
+        "range": [20, 100],
+        "show_labels": true,
+        "border": 1,
+        "fill": true
+      },
+      {
+        "type": "text",
+        "x": 288,
+        "y": 160,
+        "w": 100,
+        "h": 40,
+        "text": "CLOCK",
+        "font": "regular-16",
+        "valign": "middle"
+      },
+      {
+        "type": "number",
+        "x": 392,
+        "y": 160,
+        "w": 248,
+        "h": 40,
+        "bind": "system.gpu.clock",
+        "unit": "MHz",
+        "font": "bold-28",
+        "align": "right",
+        "valign": "middle"
+      },
+      {
+        "type": "sparkline",
+        "x": 288,
+        "y": 204,
+        "w": 352,
+        "h": 56,
+        "bind": "system.gpu.clock.history",
+        "range": [0, 2800],
+        "show_labels": true,
+        "border": 1,
+        "fill": true
+      },
+      {
+        "type": "text",
+        "x": 288,
+        "y": 272,
+        "w": 100,
+        "h": 40,
+        "text": "MEM CLK",
+        "font": "regular-16",
+        "valign": "middle"
+      },
+      {
+        "type": "number",
+        "x": 392,
+        "y": 272,
+        "w": 248,
+        "h": 40,
+        "bind": "system.gpu.mem_clock",
+        "unit": "MHz",
+        "font": "bold-28",
+        "align": "right",
+        "valign": "middle"
+      },
+      {
+        "type": "sparkline",
+        "x": 288,
+        "y": 316,
+        "w": 352,
+        "h": 56,
+        "bind": "system.gpu.mem_clock.history",
+        "range": [0, 2500],
+        "show_labels": true,
+        "border": 1,
+        "fill": true
+      },
+      {
+        "type": "text",
+        "x": 16,
+        "y": 392,
+        "w": 624,
+        "h": 24,
+        "text": "VRAM {system.mem.used_pct:.0f}%  package {system.power.package_w:.0f} W",
+        "font": "regular-18",
+        "valign": "middle"
+      },
+      {
+        "type": "bar",
+        "x": 16,
+        "y": 424,
+        "w": 624,
+        "h": 28,
+        "bind": "system.mem.used_pct",
+        "range": [0, 100],
+        "border": 1
+      }
+    ]
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "system.gpu.load": 82,
+  "system.gpu.temp": 71,
+  "system.gpu.clock": 2210,
+  "system.gpu.mem_clock": 1750,
+  "system.mem.used_pct": 64,
+  "system.power.package_w": 22,
+  "system.gpu.temp.history": [58, 61, 63, 66, 68, 69, 70, 71, 72, 71, 70, 71],
+  "system.gpu.clock.history": [1400, 1800, 2050, 2200, 2250, 2210, 2180, 2210, 2230, 2210, 2190, 2210],
+  "system.gpu.mem_clock.history": [1200, 1400, 1600, 1700, 1750, 1750, 1740, 1750, 1760, 1750, 1745, 1750]
+}
