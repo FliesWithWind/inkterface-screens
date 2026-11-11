@@ -1,0 +1,22 @@
+{
+  "schema": 1,
+  "id": "month-calendar",
+  "name": "Month Calendar",
+  "version": "1.0.0",
+  "author": "inkterface contributors",
+  "description": "A calendar grid for the current month, with today boxed. Drawn by screen.py.",
+  "active": {
+    "refresh_s": 300,
+    "code": "screen.py",
+    "widgets": []
+  },
+  "settings": [
+    {
+      "key": "week_starts",
+      "type": "enum",
+      "label": "Week starts on",
+      "values": ["monday", "sunday"],
+      "default": "monday"
+    }
+  ]
+}
