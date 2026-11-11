@@ -1,6 +1,3 @@
-# Plugin code checked out by CI (or symlinked locally)
-/.inkterface
-
 # Catalog build output
 /site/
 

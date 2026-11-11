@@ -8,6 +8,9 @@ name: Publish catalog
 # front of it, no API rate limit on downloads, and an atomic deploy so the index and the files it
 # points at always go live together. A release asset would scatter files across per-asset URLs,
 # rate-limit the API, and have no atomic swap.
+#
+# Self-contained: the plugin's validator/renderer is vendored at vendor/inkterface_core (see
+# vendor/README.md), so this workflow never checks out the plugin repo.
 on:
   push:
     branches: [main]
@@ -29,17 +32,6 @@ jobs:
       - name: Check out the catalog
         uses: actions/checkout@v4
 
-      - name: Read the pinned plugin ref
-        id: ref
-        run: echo "ref=$(head -n1 INKTERFACE_REF | tr -d '[:space:]')" >> "$GITHUB_OUTPUT"
-
-      - name: Check out the plugin at the pinned ref
-        uses: actions/checkout@v4
-        with:
-          repository: FliesWithWind/inkterface
-          ref: ${{ steps.ref.outputs.ref }}
-          path: .inkterface
-
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -47,6 +39,9 @@ jobs:
 
       - name: Install Pillow
         run: pip install pillow==13.0.0
+
+      - name: Verify the vendored plugin copy
+        run: python tools/check_vendor.py
 
       - name: Validate every screen
         run: python tools/validate.py
