@@ -1,0 +1,214 @@
+{
+  "schema": 1,
+  "id": "world-clock",
+  "name": "World Clock",
+  "version": "1.0.0",
+  "author": "inkterface contributors",
+  "description": "Three time zones side by side, each configurable in settings. Has an idle section.",
+  "active": {
+    "refresh_s": 1.0,
+    "widgets": [
+      {
+        "type": "text",
+        "x": 0,
+        "y": 0,
+        "w": 648,
+        "h": 36,
+        "text": " WORLD CLOCK",
+        "font": "bold-20",
+        "valign": "middle",
+        "invert": true
+      },
+      {
+        "type": "text",
+        "x": 0,
+        "y": 52,
+        "w": 648,
+        "h": 28,
+        "text": "{settings.label1}",
+        "font": "bold-22",
+        "align": "center"
+      },
+      {
+        "type": "clock",
+        "x": 0,
+        "y": 82,
+        "w": 648,
+        "h": 92,
+        "bind": "time.now",
+        "format": "%H:%M",
+        "timezone": "{settings.tz1}",
+        "font": "bold-80",
+        "align": "center",
+        "valign": "middle"
+      },
+      {
+        "type": "clock",
+        "x": 0,
+        "y": 174,
+        "w": 648,
+        "h": 24,
+        "bind": "time.now",
+        "format": "%a %d %b",
+        "timezone": "{settings.tz1}",
+        "font": "regular-18",
+        "align": "center"
+      },
+      {
+        "type": "text",
+        "x": 24,
+        "y": 212,
+        "w": 600,
+        "h": 2,
+        "text": "",
+        "invert": true
+      },
+      {
+        "type": "text",
+        "x": 0,
+        "y": 228,
+        "w": 324,
+        "h": 24,
+        "text": "{settings.label2}",
+        "font": "bold-18",
+        "align": "center"
+      },
+      {
+        "type": "clock",
+        "x": 0,
+        "y": 252,
+        "w": 324,
+        "h": 64,
+        "bind": "time.now",
+        "format": "%H:%M",
+        "timezone": "{settings.tz2}",
+        "font": "bold-48",
+        "align": "center",
+        "valign": "middle"
+      },
+      {
+        "type": "clock",
+        "x": 0,
+        "y": 318,
+        "w": 324,
+        "h": 22,
+        "bind": "time.now",
+        "format": "%a %d %b",
+        "timezone": "{settings.tz2}",
+        "font": "regular-16",
+        "align": "center"
+      },
+      {
+        "type": "text",
+        "x": 324,
+        "y": 228,
+        "w": 324,
+        "h": 24,
+        "text": "{settings.label3}",
+        "font": "bold-18",
+        "align": "center"
+      },
+      {
+        "type": "clock",
+        "x": 324,
+        "y": 252,
+        "w": 324,
+        "h": 64,
+        "bind": "time.now",
+        "format": "%H:%M",
+        "timezone": "{settings.tz3}",
+        "font": "bold-48",
+        "align": "center",
+        "valign": "middle"
+      },
+      {
+        "type": "clock",
+        "x": 324,
+        "y": 318,
+        "w": 324,
+        "h": 22,
+        "bind": "time.now",
+        "format": "%a %d %b",
+        "timezone": "{settings.tz3}",
+        "font": "regular-16",
+        "align": "center"
+      },
+      {
+        "type": "text",
+        "x": 24,
+        "y": 356,
+        "w": 600,
+        "h": 2,
+        "text": "",
+        "invert": true
+      },
+      {
+        "type": "clock",
+        "x": 0,
+        "y": 372,
+        "w": 648,
+        "h": 40,
+        "bind": "time.now",
+        "format": "Local %H:%M:%S",
+        "font": "regular-28",
+        "align": "center",
+        "valign": "middle"
+      }
+    ]
+  },
+  "idle": {
+    "render_mode": "mono",
+    "refresh_interval_s": 60,
+    "full_refresh_every": 60,
+    "sources": {
+      "time": {
+        "type": "clock"
+      }
+    },
+    "widgets": [
+      {
+        "type": "text",
+        "x": 0,
+        "y": 0,
+        "w": 648,
+        "h": 36,
+        "text": " WORLD CLOCK",
+        "font": "bold-18",
+        "invert": true,
+        "valign": "middle"
+      },
+      {
+        "type": "clock",
+        "x": 0,
+        "y": 60,
+        "w": 648,
+        "h": 160,
+        "bind": "time.now",
+        "format": "%H:%M",
+        "font": "bold-150",
+        "align": "center",
+        "valign": "middle"
+      },
+      {
+        "type": "clock",
+        "x": 0,
+        "y": 236,
+        "w": 648,
+        "h": 40,
+        "bind": "time.now",
+        "format": "%A, %d %B",
+        "font": "regular-28",
+        "align": "center",
+        "valign": "middle"
+      }
+    ]
+  },
+  "settings": [
+    {"key": "label1", "type": "string", "label": "Zone 1 label", "default": "Berlin"},
+    {"key": "tz1", "type": "string", "label": "Zone 1 (IANA name)", "default": "Europe/Berlin"},
+    {"key": "label2", "type": "string", "label": "Zone 2 label", "default": "New York"},
+    {"key": "tz2", "type": "string", "label": "Zone 2 (IANA name)", "default": "America/New_York"},
+    {"key": "label3", "type": "string", "label": "Zone 3 label", "default": "Tokyo"},
+    {"key": "tz3", "type": "string", "label": "Zone 3 (IANA name)", "default": "Asia/Tokyo"}
+  ]
+}
