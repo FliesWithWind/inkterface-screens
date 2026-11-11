@@ -1,0 +1,15 @@
+# Plugin code checked out by CI (or symlinked locally)
+/.inkterface/
+
+# Catalog build output
+/site/
+
+# Signing keys -- NEVER commit these
+*.key
+catalog.key
+catalog-pubkey.txt
+
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
