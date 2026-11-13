@@ -1,0 +1,320 @@
+{
+  "schema": 1,
+  "id": "haunted-telemetry",
+  "name": "Haunted Telemetry",
+  "version": "1.0.0",
+  "author": "inkterface contributors",
+  "description": "Live CPU/GPU load and temperature, the game you are playing and the time, haunted: bats, a jack-o'-lantern, cobwebs and spooky labels.",
+  "active": {
+    "refresh_s": 1.0,
+    "widgets": [
+      {
+        "type": "image",
+        "x": 0,
+        "y": 0,
+        "w": 108,
+        "h": 108,
+        "src": "web-tl.png",
+        "fit": "fill",
+        "dither": "threshold"
+      },
+      {
+        "type": "image",
+        "x": 540,
+        "y": 0,
+        "w": 108,
+        "h": 108,
+        "src": "web-tr.png",
+        "fit": "fill",
+        "dither": "threshold"
+      },
+      {
+        "type": "image",
+        "x": 0,
+        "y": 392,
+        "w": 88,
+        "h": 88,
+        "src": "web-bl.png",
+        "fit": "fill",
+        "dither": "threshold"
+      },
+      {
+        "type": "image",
+        "x": 560,
+        "y": 392,
+        "w": 88,
+        "h": 88,
+        "src": "web-br.png",
+        "fit": "fill",
+        "dither": "threshold"
+      },
+      {
+        "type": "text",
+        "x": 112,
+        "y": 8,
+        "w": 424,
+        "h": 40,
+        "text": "HAUNTED TELEMETRY",
+        "font": "bold-32",
+        "align": "center",
+        "valign": "middle"
+      },
+      {
+        "type": "text",
+        "x": 124,
+        "y": 52,
+        "w": 400,
+        "h": 2,
+        "text": "",
+        "invert": true
+      },
+      {
+        "type": "text",
+        "x": 112,
+        "y": 58,
+        "w": 424,
+        "h": 20,
+        "text": "~ the witching hour ~",
+        "font": "regular-14",
+        "align": "center",
+        "valign": "middle"
+      },
+      {
+        "type": "image",
+        "x": 128,
+        "y": 84,
+        "w": 80,
+        "h": 48,
+        "src": "bat-up.png",
+        "fit": "fill",
+        "dither": "threshold"
+      },
+      {
+        "type": "image",
+        "x": 440,
+        "y": 84,
+        "w": 80,
+        "h": 48,
+        "src": "bat-down.png",
+        "fit": "fill",
+        "dither": "threshold"
+      },
+      {
+        "type": "image",
+        "x": 248,
+        "y": 158,
+        "w": 152,
+        "h": 150,
+        "src": "pumpkin.png",
+        "fit": "fill",
+        "dither": "threshold"
+      },
+      {
+        "type": "clock",
+        "x": 224,
+        "y": 84,
+        "w": 200,
+        "h": 48,
+        "font": "bold-40",
+        "format": "%H:%M"
+      },
+      {
+        "type": "clock",
+        "x": 174,
+        "y": 134,
+        "w": 300,
+        "h": 20,
+        "font": "regular-16",
+        "format": "%A, %d %B"
+      },
+      {
+        "type": "text",
+        "x": 12,
+        "y": 162,
+        "w": 224,
+        "h": 22,
+        "text": "CPU: SOULS CONSUMED",
+        "font": "regular-16"
+      },
+      {
+        "type": "number",
+        "x": 12,
+        "y": 184,
+        "w": 224,
+        "h": 50,
+        "bind": "system.cpu.load",
+        "font": "bold-40",
+        "unit": "%",
+        "valign": "middle"
+      },
+      {
+        "type": "bar",
+        "x": 12,
+        "y": 238,
+        "w": 224,
+        "h": 12,
+        "bind": "system.cpu.load",
+        "range": [
+          0,
+          100
+        ],
+        "border": 1
+      },
+      {
+        "type": "text",
+        "x": 12,
+        "y": 262,
+        "w": 224,
+        "h": 22,
+        "text": "CPU: CRYPT FEVER",
+        "font": "regular-16"
+      },
+      {
+        "type": "number",
+        "x": 12,
+        "y": 284,
+        "w": 224,
+        "h": 40,
+        "bind": "system.cpu.temp",
+        "font": "bold-28",
+        "unit": "°C",
+        "valign": "middle"
+      },
+      {
+        "type": "text",
+        "x": 412,
+        "y": 162,
+        "w": 224,
+        "h": 22,
+        "text": "GPU: GHOSTS SUMMONED",
+        "font": "regular-16"
+      },
+      {
+        "type": "number",
+        "x": 412,
+        "y": 184,
+        "w": 224,
+        "h": 50,
+        "bind": "system.gpu.load",
+        "font": "bold-40",
+        "unit": "%",
+        "valign": "middle"
+      },
+      {
+        "type": "bar",
+        "x": 412,
+        "y": 238,
+        "w": 224,
+        "h": 12,
+        "bind": "system.gpu.load",
+        "range": [
+          0,
+          100
+        ],
+        "border": 1
+      },
+      {
+        "type": "text",
+        "x": 412,
+        "y": 262,
+        "w": 224,
+        "h": 22,
+        "text": "GPU: HELLFIRE",
+        "font": "regular-16"
+      },
+      {
+        "type": "number",
+        "x": 412,
+        "y": 284,
+        "w": 224,
+        "h": 40,
+        "bind": "system.gpu.temp",
+        "font": "bold-28",
+        "unit": "°C",
+        "valign": "middle"
+      },
+      {
+        "type": "text",
+        "x": 12,
+        "y": 334,
+        "w": 624,
+        "h": 2,
+        "text": "",
+        "invert": true
+      },
+      {
+        "type": "text",
+        "x": 12,
+        "y": 340,
+        "w": 300,
+        "h": 20,
+        "text": "NOW HAUNTING",
+        "font": "regular-14",
+        "valign": "middle"
+      },
+      {
+        "type": "text",
+        "x": 12,
+        "y": 360,
+        "w": 380,
+        "h": 30,
+        "text": "{steam.now_playing.name}",
+        "font": "bold-24",
+        "valign": "middle"
+      },
+      {
+        "type": "text",
+        "x": 456,
+        "y": 360,
+        "w": 180,
+        "h": 30,
+        "text": "{steam.now_playing.session_minutes:.0f} min cursed",
+        "font": "regular-14",
+        "align": "right",
+        "valign": "middle"
+      },
+      {
+        "type": "image",
+        "x": 112,
+        "y": 414,
+        "w": 48,
+        "h": 30,
+        "src": "bat-small.png",
+        "fit": "fill",
+        "dither": "threshold"
+      },
+      {
+        "type": "image",
+        "x": 488,
+        "y": 414,
+        "w": 48,
+        "h": 30,
+        "src": "bat-small.png",
+        "fit": "fill",
+        "dither": "threshold"
+      },
+      {
+        "type": "text",
+        "x": 166,
+        "y": 406,
+        "w": 316,
+        "h": 44,
+        "text": "HAPPY HALLOWEEN",
+        "font": "bold-32",
+        "align": "center",
+        "valign": "middle"
+      },
+      {
+        "type": "text",
+        "x": 112,
+        "y": 452,
+        "w": 424,
+        "h": 22,
+        "text": "31 OCT - TRICK OR TREAT - BEWARE",
+        "font": "regular-14",
+        "align": "center",
+        "valign": "middle"
+      }
+    ]
+  }
+}
