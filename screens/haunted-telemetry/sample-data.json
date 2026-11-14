@@ -1,0 +1,12 @@
+{
+  "time.now": "2026-10-30T23:47:00+01:00",
+  "time.tz": "Europe/Berlin",
+  "system.cpu.load": 87,
+  "system.cpu.temp": 78,
+  "system.gpu.load": 96,
+  "system.gpu.temp": 83,
+  "steam.now_playing": {
+    "name": "Crypt Crawler",
+    "session_minutes": 134
+  }
+}

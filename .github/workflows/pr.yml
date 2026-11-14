@@ -29,8 +29,8 @@ jobs:
         with:
           python-version: '3.14'
 
-      - name: Install Pillow
-        run: pip install pillow==13.0.0
+      - name: Install Pillow and pytest
+        run: pip install pillow==13.0.0 pytest
 
       - name: Verify the vendored plugin copy
         run: python tools/check_vendor.py
